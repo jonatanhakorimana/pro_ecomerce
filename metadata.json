@@ -1,0 +1,6 @@
+{
+  "name": "Shop Eazy - E-Commerce Management System",
+  "description": "Complete e-commerce platform with customer shopping, cart & checkout, order tracking, and comprehensive admin dashboard for products, categories, orders, customers, and analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
