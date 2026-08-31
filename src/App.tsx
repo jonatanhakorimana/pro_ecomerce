@@ -253,21 +253,6 @@ function ShopEazyApp() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-zinc-950">
-      {/* Top Notification Announcement Bar */}
-      <div className="bg-emerald-950/70 border-b border-emerald-900/50 py-1.5 px-4 text-center text-xs text-emerald-300 font-medium flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-        <span>
-          Spring Launch Special: Use code <strong className="font-mono text-white underline">EAZY10</strong> for 10% OFF &amp; code <strong className="font-mono text-white underline">FREESHIP</strong> for free nationwide delivery!
-        </span>
-        <button
-          onClick={() => setIsSchemaViewerOpen(true)}
-          className="ml-3 hidden sm:inline-flex items-center gap-1 text-[11px] bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded-md transition-colors"
-        >
-          <Database className="w-3 h-3" />
-          <span>MySQL &amp; PHP Schema</span>
-        </button>
-      </div>
-
       {/* Main Navbar */}
       <Navbar
         user={user}

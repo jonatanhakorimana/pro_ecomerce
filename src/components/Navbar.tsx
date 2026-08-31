@@ -59,29 +59,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800 text-zinc-100">
-      {/* Top Banner with Quick Highlights */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white text-xs font-medium py-1.5 px-4 text-center flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-        <span>✨ Free express shipping on orders over $100 with code <strong className="underline uppercase tracking-wide">FREESHIP</strong></span>
-        <span className="hidden md:inline text-emerald-200">|</span>
-        {onOpenBackendApi && (
-          <button
-            onClick={onOpenBackendApi}
-            className="flex items-center gap-1.5 underline text-emerald-100 hover:text-white transition-colors cursor-pointer font-bold"
-          >
-            <Server className="w-3.5 h-3.5" />
-            <span>Backend API Settings (PHP/MySQL)</span>
-          </button>
-        )}
-        <span className="hidden md:inline text-emerald-200">|</span>
-        <button
-          onClick={onOpenSchemaDocs}
-          className="hidden md:flex items-center gap-1.5 underline text-emerald-100 hover:text-white transition-colors"
-        >
-          <Database className="w-3.5 h-3.5" />
-          <span>View MySQL Schema</span>
-        </button>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
