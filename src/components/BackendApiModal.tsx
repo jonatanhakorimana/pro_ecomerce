@@ -36,7 +36,7 @@ export const BackendApiModal: React.FC<BackendApiModalProps> = ({
     latencyMs?: number;
   } | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"settings" | "endpoints" | "php_starter">("settings");
+  const [activeTab, setActiveTab] = useState<"settings" | "endpoints" | "nodejs_starter">("settings");
 
   useEffect(() => {
     if (isOpen) {
@@ -79,7 +79,7 @@ export const BackendApiModal: React.FC<BackendApiModalProps> = ({
       const latency = Date.now() - startTime;
       setTestResult({
         success: true,
-        message: `Kuri Backend Byagenze neza! HTTP ${res.status} OK. Yakiriye ibicuruzwa: ${Array.isArray(res.data?.data) ? res.data.data.length : '0'}`,
+        message: `Node.js Backend yakiriye ubusabe neza! HTTP ${res.status} OK. Yakiriye ibicuruzwa: ${Array.isArray(res.data?.data) ? res.data.data.length : '0'}`,
         status: res.status,
         latencyMs: latency
       });
@@ -88,7 +88,7 @@ export const BackendApiModal: React.FC<BackendApiModalProps> = ({
       setTestResult({
         success: false,
         message: err.response
-          ? `Backend yagaruye ikosa: HTTP ${err.response.status} (${err.response.statusText || 'Error'})`
+          ? `Node.js Backend yagaruye ikosa: HTTP ${err.response.status} (${err.response.statusText || 'Error'})`
           : `Ntibyakunze kugera kuri ${apiUrl}: ${err.message || 'Network error / CORS issue'}`,
         status: err.response?.status,
         latencyMs: latency
@@ -104,72 +104,68 @@ export const BackendApiModal: React.FC<BackendApiModalProps> = ({
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const phpSampleCode = `<?php
+  const nodeJsSampleCode = `import express from "express";
+import cors from "cors";
+
 // ==============================================================
-// SHOP EAZY - PHP REST API STARTER (db.php & api/products.php)
+// SHOP EAZY - NODE.JS + EXPRESS REST API BACKEND
+// server.ts / server.js (Node.js runtime, port 3000)
 // ==============================================================
 
-// 1. CORS Headers (Kwemerera React Frontend)
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Content-Type: application/json; charset=UTF-8");
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+// 1. CORS & JSON Middleware
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json());
 
-// 2. Database Connection via PDO
-$host = "localhost";
-$db_name = "shopeazy_db";
-$username = "root";
-$password = "";
+// 2. Data store / Model (MongoDB, PostgreSQL, MySQL or In-Memory)
+let products = [
+  {
+    id: 1,
+    name: "Aura Pro Wireless Headphones",
+    slug: "aura-pro-wireless",
+    description: "Spatial audio, active noise cancellation, and 40h battery.",
+    price: 299.99,
+    stockQuantity: 24,
+    categoryId: 1,
+    rating: 4.9,
+    reviewsCount: 128
+  }
+];
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8mb4", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "DB Error: " . $e->getMessage()]);
-    exit();
-}
+// 3. GET /api/products
+app.get("/api/products", (req, res) => {
+  res.json({
+    status: "success",
+    total: products.length,
+    data: products
+  });
+});
 
-// 3. Simple Router for Products
-$requestUri = $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
+// 4. POST /api/orders (Checkout)
+app.post("/api/orders", (req, res) => {
+  const { customerName, customerEmail, items } = req.body;
+  const orderNumber = "ORD-" + Math.floor(1000 + Math.random() * 9000);
+  const trackingNumber = "TRK-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+  
+  const newOrder = {
+    id: Date.now(),
+    orderNumber,
+    customerName,
+    customerEmail,
+    items,
+    trackingNumber,
+    status: "processing"
+  };
 
-if ($method === 'GET') {
-    // Gusoma ibicuruzwa
-    $stmt = $pdo->query("SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.is_active = 1");
-    $products = $stmt->fetchAll();
-    echo json_encode([
-        "status" => "success",
-        "total" => count($products),
-        "data" => $products
-    ]);
-    exit();
-}
+  res.json({ status: "success", message: "Order placed successfully!", order: newOrder });
+});
 
-if ($method === 'POST') {
-    // Kongeramo igicuruzwa gishya
-    $data = json_decode(file_get_contents("php://input"), true);
-    $stmt = $pdo->prepare("INSERT INTO products (name, slug, description, price, stock_quantity, category_id, image) VALUES (:name, :slug, :desc, :price, :stock, :cat_id, :image)");
-    $stmt->execute([
-        ':name' => $data['name'] ?? 'Igicuruzwa gishya',
-        ':slug' => strtolower(str_replace(' ', '-', $data['name'] ?? 'product')),
-        ':desc' => $data['description'] ?? '',
-        ':price' => $data['price'] ?? 0,
-        ':stock' => $data['stockQuantity'] ?? 10,
-        ':cat_id' => $data['categoryId'] ?? 1,
-        ':image' => $data['image'] ?? ''
-    ]);
-    echo json_encode(["status" => "success", "message" => "Igicuruzwa cyongewemo neza!"]);
-    exit();
-}
-?>`;
+app.listen(PORT, () => {
+  console.log(\`Node.js Express REST Backend listening on port \${PORT}\`);
+});`;
+
 
   return (
     <div id="backend-api-modal" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -225,15 +221,15 @@ if ($method === 'POST') {
             <span>Ama Endpoints (REST Contract)</span>
           </button>
           <button
-            onClick={() => setActiveTab("php_starter")}
+            onClick={() => setActiveTab("nodejs_starter")}
             className={`py-3 px-4 text-xs font-bold border-b-2 flex items-center gap-2 transition-colors ${
-              activeTab === "php_starter"
+              activeTab === "nodejs_starter"
                 ? "border-emerald-500 text-emerald-400"
                 : "border-transparent text-zinc-400 hover:text-zinc-200"
             }`}
           >
             <Code2 className="w-3.5 h-3.5" />
-            <span>PHP API Starter Code</span>
+            <span>Node.js API Server Code</span>
           </button>
         </div>
 
@@ -245,10 +241,10 @@ if ($method === 'POST') {
               <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-emerald-300">
                   <Sparkles className="w-4 h-4" />
-                  <span>Frontend yiteguye kwakira Backend API yawe</span>
+                  <span>Node.js &amp; Express REST Backend iri gukora neza</span>
                 </div>
                 <p className="text-emerald-300/80 leading-relaxed">
-                  Ibicuruzwa bya mock byavuyemo. Ubu ushobora kwandikamo URL ya API yawe (urugero: <code className="bg-emerald-950/80 px-1.5 py-0.5 rounded text-emerald-200">http://localhost/shopeazy/api</code> cyangwa <code className="bg-emerald-950/80 px-1.5 py-0.5 rounded text-emerald-200">http://localhost:8000/api</code>) maze Frontend igahita isoma ibicuruzwa bivuye muri Database yawe ya MySQL/PHP!
+                  Urubuga rurimo gukorera kuri Node.js backend (Express.js) kuri port 3000. API routes zose ziri muri <code className="bg-emerald-950/80 px-1.5 py-0.5 rounded text-emerald-200">/api/*</code>. Ushobora kwifashisha iyi URL cyangwa ukinjiza indi URL ya Node.js backend yaba iri gukora ahandi.
                 </p>
               </div>
 
@@ -264,7 +260,7 @@ if ($method === 'POST') {
                       type="text"
                       value={apiUrl}
                       onChange={(e) => setApiUrl(e.target.value)}
-                      placeholder="e.g. http://localhost/shopeazy/api cyangwa /api"
+                      placeholder="e.g. http://localhost:3000/api cyangwa /api"
                       className="w-full bg-zinc-900 border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
                     />
                   </div>
@@ -327,25 +323,25 @@ if ($method === 'POST') {
               <div className="space-y-3 bg-zinc-950/40 p-5 rounded-2xl border border-zinc-800">
                 <h3 className="font-bold text-white text-xs flex items-center gap-2">
                   <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
-                  Uko watangiza Backend yawe muri intambwe 3 zoroshye:
+                  Uburyo Node.js Backend ikora mu ntambwe 3:
                 </h3>
                 <div className="space-y-2 text-zinc-300">
                   <div className="flex gap-2">
                     <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0">1</span>
                     <div>
-                      <strong>Kora Database muri MySQL:</strong> Kora database yitwa <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">shopeazy_db</code> maze ushyiremo tables ukoresheje script iri mu gice cya "Database Schema Viewer".
+                      <strong>Node.js + Express Server:</strong> Backend iri gukorera kuri Node.js runtime (server.ts), itanga REST API kuri port 3000.
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0">2</span>
                     <div>
-                      <strong>Fungura PHP Server:</strong> Kora folder muri XAMPP (<code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">htdocs/shopeazy-api</code>) cyangwa wandike <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">php -S localhost:8000</code>.
+                      <strong>Full REST Endpoints:</strong> Inzira zose zirimo <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">/api/products</code>, <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">/api/orders</code>, na <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">/api/cart</code> zirakora neza.
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0">3</span>
                     <div>
-                      <strong>Andika URL hejuru:</strong> Shyiramo URL ya PHP yawe hejuru kuri iyi page cyangwa muri file ya <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">.env</code> (VITE_API_BASE_URL).
+                      <strong>Dynamic URL:</strong> URL y'ibanze ni <code className="bg-zinc-800 px-1 py-0.5 rounded text-emerald-300">/api</code>. Niba ufite indi Node.js service, ushobora kuyishyiramo hejuru.
                     </div>
                   </div>
                 </div>
@@ -412,16 +408,15 @@ if ($method === 'POST') {
             </div>
           )}
 
-          {activeTab === "php_starter"}
-          {activeTab === "php_starter" && (
+          {activeTab === "nodejs_starter" && (
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-zinc-400">Copy-Paste iyi code muri <code className="text-emerald-400 font-bold font-mono">api.php</code> yawe:</span>
+                <span className="text-zinc-400">Node.js Express REST Backend Code (<code className="text-emerald-400 font-bold font-mono">server.ts</code>):</span>
                 <button
-                  onClick={() => copyToClipboard(phpSampleCode, "php_code")}
+                  onClick={() => copyToClipboard(nodeJsSampleCode, "nodejs_code")}
                   className="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold flex items-center gap-1.5 transition-colors"
                 >
-                  {copiedKey === "php_code" ? (
+                  {copiedKey === "nodejs_code" ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-emerald-400" />
                       <span>Copied!</span>
@@ -429,13 +424,13 @@ if ($method === 'POST') {
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5" />
-                      <span>Copy PHP Code</span>
+                      <span>Copy Node.js Code</span>
                     </>
                   )}
                 </button>
               </div>
               <pre className="p-4 bg-zinc-950 border border-zinc-800 rounded-2xl text-[11px] font-mono text-zinc-300 overflow-x-auto max-h-96 leading-relaxed">
-                {phpSampleCode}
+                {nodeJsSampleCode}
               </pre>
             </div>
           )}

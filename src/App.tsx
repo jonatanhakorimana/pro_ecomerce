@@ -416,8 +416,8 @@ function ShopEazyApp() {
                     onClick={() => setIsSchemaViewerOpen(true)}
                     className="px-5 py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 font-bold text-xs sm:text-sm transition-all flex items-center gap-2"
                   >
-                    <Database className="w-4 h-4 text-sky-400" />
-                    <span>View MySQL Architecture</span>
+                    <Server className="w-4 h-4 text-emerald-400" />
+                    <span>Node.js API &amp; Architecture</span>
                   </button>
                 </div>
               </div>
@@ -591,10 +591,10 @@ function ShopEazyApp() {
                   </div>
                   <div className="space-y-2 max-w-md mx-auto">
                     <h3 className="text-xl font-black text-white">
-                      Nta bicuruzwa birashyirwamo (Frontend is Ready)
+                      Node.js Backend is Active
                     </h3>
                     <p className="text-xs text-zinc-400 leading-relaxed">
-                      Ibicuruzwa bya mock byavuyemo neza. Ubu frontend yiteguye kwakira ibicuruzwa bivuye muri Backend API yawe ya PHP/MySQL, cyangwa ushobora kubyongeramo ukoresheje Admin Panel.
+                      Express REST API iri gukora neza kuri Node.js runtime. Niba nta bicuruzwa bihari, ushobora kubyinjiza binyuze muri Admin Panel cyangwa ukoresheje Node.js REST API.
                     </p>
                   </div>
 
@@ -614,7 +614,7 @@ function ShopEazyApp() {
                       className="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-emerald-400 border border-emerald-500/30 font-bold text-xs flex items-center gap-2 transition-all"
                     >
                       <Server className="w-4 h-4" />
-                      <span>Igenamiterere rya Backend API (PHP URL)</span>
+                      <span>Igenamiterere rya Backend API (Node.js)</span>
                     </button>
                     <button
                       onClick={() => loadStoreData()}
@@ -719,15 +719,15 @@ function ShopEazyApp() {
               </span>
             </div>
             <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
-              Full-Stack E-Commerce Management System built with React + Vite frontend, Axios JWT authentication, and structured PHP REST API + MySQL database schemas.
+              Full-Stack E-Commerce Management System built with React + Vite frontend, Axios JWT authentication, Node.js Express REST API, and production SQL database schemas.
             </p>
             <div className="pt-2">
               <button
                 onClick={() => setIsSchemaViewerOpen(true)}
                 className="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-colors"
               >
-                <Database className="w-3.5 h-3.5 text-sky-400" />
-                <span>Inspect MySQL Schema &amp; PHP PDO Docs</span>
+                <Database className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Inspect SQL Schema (/backend/schema.sql)</span>
               </button>
             </div>
           </div>

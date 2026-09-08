@@ -123,10 +123,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={onOpenBackendApi}
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-emerald-400 hover:text-emerald-300 border border-zinc-800 transition-all"
-                title="Configure Backend API (PHP REST API URL)"
+                title="Node.js Express REST API Status & Configuration"
               >
                 <Server className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Backend API</span>
+                <span>Node.js API</span>
               </button>
             )}
 
