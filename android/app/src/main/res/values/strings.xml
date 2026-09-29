@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">pro_ecomerce</string>
+    <string name="title_activity_main">pro_ecomerce</string>
+    <string name="package_name">com.jonathan.pro_ecomerce</string>
+    <string name="custom_url_scheme">com.jonathan.pro_ecomerce</string>
+</resources>
