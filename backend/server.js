@@ -11,8 +11,7 @@ const frontendRoot = path.join(root, "frontend");
 const app = express();
 app.use(createApp());
 app.use("/api", (_req, res) => res.status(404).json({ status: "error", message: "Endpoint not found." }));
-const isProduction = process.env.NODE_ENV === "production" ||
-  process.argv[1]?.replaceAll("\\", "/").endsWith("/dist/server.mjs");
+const isProduction = process.env.NODE_ENV === "production" || process.argv.includes("--production");
 const port = Number(process.env.PORT || 3000);
 
 async function seedAdmin() {

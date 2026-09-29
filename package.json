@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node backend/server.js",
-    "build": "vite build --config frontend/vite.config.ts && esbuild backend/server.js --bundle --platform=node --format=esm --packages=external --sourcemap --outfile=dist/server.mjs",
-    "start": "node dist/server.mjs",
+    "build": "vite build --config frontend/vite.config.ts",
+    "start": "node backend/server.js --production",
     "db:init": "node backend/scripts/init-db.js",
     "test": "node --test backend/tests/flutterwave.test.js",
     "preview": "vite preview --config frontend/vite.config.ts",
