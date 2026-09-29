@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: pro-ecomerce
+    runtime: node
+    buildCommand: bun install && bun run build
+    startCommand: bun run start
