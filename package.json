@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node backend/server.js",
     "build": "vite build --config frontend/vite.config.ts",
-    "start": "node backend/server.js --production",
+    "start": "bun run build && node backend/server.js --production",
     "db:init": "node backend/scripts/init-db.js",
     "test": "node --test backend/tests/flutterwave.test.js",
     "preview": "vite preview --config frontend/vite.config.ts",
